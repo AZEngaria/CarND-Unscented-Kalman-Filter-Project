@@ -25,10 +25,10 @@ UKF::UKF() {
   P_ = MatrixXd(5, 5);
 
   // Process noise standard deviation longitudinal acceleration in m/s^2
-  std_a_ = 30;
+  std_a_ = 3;
 
   // Process noise standard deviation yaw acceleration in rad/s^2
-  std_yawdd_ = 30;
+  std_yawdd_ = 1.568;
   
   //DO NOT MODIFY measurement noise values below these are provided by the sensor manufacturer.
   // Laser measurement noise standard deviation position1 in m
@@ -54,7 +54,13 @@ UKF::UKF() {
 
   Hint: one or more values initialized above might be wildly off...
   */
-}
+	n_x_ = 5;
+	
+	n_aug_ = 7;
+	
+	lambda_ = 3 - n_x; 
+	is_initialized_ = false;
+ }
 
 UKF::~UKF() {}
 
@@ -69,6 +75,22 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
   Complete this function! Make sure you switch between lidar and radar
   measurements.
   */
+  if(is_initialized_ == false){
+	  
+	  x_ = VectorXd(n_x_);
+	  x_ << 0,0,0,0,0;
+	  
+	  P_ = MatrixXd(n_x_, n_x_);
+	  P_ << 1, 0, 0, 0, 0,
+			0, 1, 0, 0, 0,
+			0, 0, 1, 0, 0,
+			0, 0, 0, 1, 0,
+			0, 0, 0, 0, 1;
+	
+	  if(meas_package.SENSORTY
+	  is_initialized_ = true;
+	  return;
+  }
 }
 
 /**
